@@ -1,3 +1,4 @@
+import 'package:chat_app/chatroom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -130,6 +131,8 @@ class _SignInState extends State<SignIn> {
         password: _passcontroller2.text,
       ))
           .user;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ChatRoom()));
       print('Login Successful');
     } catch (e) {
       print(e);
