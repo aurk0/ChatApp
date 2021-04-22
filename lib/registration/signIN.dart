@@ -93,7 +93,11 @@ class _SignInState extends State<SignIn> {
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.blueGrey[700]),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_key.currentState.validate()) {
+                            login();
+                          }
+                        },
                         child: Text(
                           "Sign In",
                           style: TextStyle(
@@ -116,6 +120,19 @@ class _SignInState extends State<SignIn> {
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  void login() async {
+    try {
+      final User user = (await auth.signInWithEmailAndPassword(
+        email: _emailcontroller2.text,
+        password: _passcontroller2.text,
+      ))
+          .user;
+      print('Login Successful');
+    } catch (e) {
+      print(e);
     }
   }
 }
