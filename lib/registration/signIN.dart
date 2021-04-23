@@ -1,4 +1,5 @@
 import 'package:chat_app/chatroom.dart';
+import 'package:chat_app/registration/datastore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +17,13 @@ class _SignInState extends State<SignIn> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  Datastore datastore = new Datastore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Chat App"),
         backgroundColor: Colors.teal[700],
       ),
@@ -117,6 +121,8 @@ class _SignInState extends State<SignIn> {
       final User user = (await auth.createUserWithEmailAndPassword(
               email: _emailcontroller1.text, password: _passcontroller1.text))
           .user;
+      Map<String, String> userDataMap = {"userName": _emailcontroller1.text};
+      datastore.addUserInfo(userDataMap);
       print('Sign Up Successful');
     } catch (e) {
       print(e.toString());
