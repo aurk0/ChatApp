@@ -40,6 +40,15 @@ class Datastore {
     }
   }
 
+  Future<Stream<QuerySnapshot>> getTexts(String chatroomID) async {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatroomID)
+        .collection("chats")
+        .orderBy("time", descending: true)
+        .snapshots();
+  }
+
   Future<void> addUserInfo(userData) async {
     FirebaseFirestore.instance
         .collection("users")

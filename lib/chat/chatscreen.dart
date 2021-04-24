@@ -1,5 +1,6 @@
 import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/datastore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
@@ -16,6 +17,7 @@ class _ChatFinalState extends State<ChatFinal> {
   TextEditingController textController = new TextEditingController();
 
   String chatroomID, textID;
+  Stream textStream;
 
   getInfo() async {
     chatroomID = getchatroomID(widget.barName, user.email);
@@ -57,7 +59,10 @@ class _ChatFinalState extends State<ChatFinal> {
     }
   }
 
-  getsetTexts() {}
+  getsetTexts() async {
+    textStream = await Datastore().getTexts(chatroomID);
+    setState(() {});
+  }
 
   doOnlaunch() async {
     await getInfo();
@@ -78,6 +83,22 @@ class _ChatFinalState extends State<ChatFinal> {
       body: Container(
         child: Stack(
           children: [
+            StreamBuilder(
+                stream: textStream,
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot ds = snapshot.data.docs[index];
+                            return Text(ds["texts"]);
+                          })
+                      : Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.teal[700],
+                          ),
+                        );
+                }),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
