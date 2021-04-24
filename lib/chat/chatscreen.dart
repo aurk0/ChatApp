@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
 class ChatFinal extends StatefulWidget {
-  final String barName;
-  ChatFinal(this.barName);
+  final String barMail;
+  ChatFinal(this.barMail);
   @override
   _ChatFinalState createState() => _ChatFinalState();
 }
@@ -20,7 +20,7 @@ class _ChatFinalState extends State<ChatFinal> {
   Stream textStream;
 
   getInfo() async {
-    chatroomID = getchatroomID(widget.barName, user.email);
+    chatroomID = getchatroomID(widget.barMail, user.email);
   }
 
   getchatroomID(String a, String b) {
@@ -79,7 +79,7 @@ class _ChatFinalState extends State<ChatFinal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.barName), backgroundColor: Colors.teal[700]),
+          title: Text(widget.barMail), backgroundColor: Colors.teal[700]),
       body: Container(
         child: Stack(
           children: [

@@ -1,4 +1,3 @@
-import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/signIN.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
