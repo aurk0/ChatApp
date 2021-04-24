@@ -8,14 +8,36 @@ class Datastore {
         .get();
   }
 
-  Future<bool> addChatRoom(chatRoom, chatRoomId) {
-    FirebaseFirestore.instance
-        .collection("chatRoom")
-        .doc(chatRoomId)
-        .set(chatRoom)
-        .catchError((e) {
-      print(e);
-    });
+  Future addTextsFirebase(
+      String chatroomID, String textID, Map textInfo) async {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatroomID)
+        .collection("texts")
+        .doc(textID)
+        .set(textInfo);
+  }
+
+  updateLastSendText(String chatroomID, Map lastTextInfo) {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatroomID)
+        .update(lastTextInfo);
+  }
+
+  createChatRoom(String chatroomID, Map chatRoomInfo) async {
+    final snapShot = await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatroomID)
+        .get();
+    if (snapShot.exists) {
+      return true;
+    } else {
+      return FirebaseFirestore.instance
+          .collection("chatRooms")
+          .doc(chatroomID)
+          .set(chatRoomInfo);
+    }
   }
 
   Future<void> addUserInfo(userData) async {

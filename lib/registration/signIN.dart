@@ -121,6 +121,7 @@ class _SignInState extends State<SignIn> {
       final User user = (await auth.createUserWithEmailAndPassword(
               email: _emailcontroller1.text, password: _passcontroller1.text))
           .user;
+
       Map<String, String> userDataMap = {"userEmail": _emailcontroller1.text};
       datastore.addUserInfo(userDataMap);
       print('Sign Up Successful');

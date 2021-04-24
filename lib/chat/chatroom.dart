@@ -13,8 +13,15 @@ class _ChatRoomState extends State<ChatRoom> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Datastore datastore = new Datastore();
   FirebaseAuth auth = FirebaseAuth.instance;
+  final user = FirebaseAuth.instance.currentUser;
 
-  chatConversation(String userEmail) {}
+  getchatroomID(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +80,18 @@ class _ChatRoomState extends State<ChatRoom> {
                                       color: Colors.blueGrey[800],
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
+                                      var chatroomID = getchatroomID(
+                                          user.email, Document["userEmail"]);
+                                      Map<String, dynamic> chatRoomInfo = {
+                                        "users": [
+                                          user.email,
+                                          Document["userEmail"]
+                                        ]
+                                      };
+                                      Datastore().createChatRoom(
+                                          chatroomID, chatRoomInfo);
+
+                                      Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) => ChatFinal(
                                                   Document["userEmail"])));
