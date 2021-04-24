@@ -8,6 +8,16 @@ class Datastore {
         .get();
   }
 
+  Future<bool> addChatRoom(chatRoom, chatRoomId) {
+    FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .set(chatRoom)
+        .catchError((e) {
+      print(e);
+    });
+  }
+
   Future<void> addUserInfo(userData) async {
     FirebaseFirestore.instance
         .collection("users")

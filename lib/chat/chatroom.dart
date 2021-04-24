@@ -1,3 +1,4 @@
+import 'package:chat_app/chat/chatscreen.dart';
 import 'package:chat_app/registration/datastore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,8 @@ class _ChatRoomState extends State<ChatRoom> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Datastore datastore = new Datastore();
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  chatConversation(String userEmail) {}
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                       Icons.message,
                                       color: Colors.blueGrey[800],
                                     ),
-                                    onPressed: () {})
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatFinal(
+                                                  Document["userEmail"])));
+                                    })
                               ],
                             )),
                       ),
