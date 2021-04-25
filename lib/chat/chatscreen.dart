@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/datastore.dart';
+import 'package:chat_app/sendImage/imageSend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +21,7 @@ class _ChatFinalState extends State<ChatFinal> {
 
   String chatroomID, textID;
   Stream textStream;
+  String textType = "";
 
   getInfo() async {
     chatroomID = getchatroomID(widget.barMail, user.email);
@@ -64,14 +68,14 @@ class _ChatFinalState extends State<ChatFinal> {
     setState(() {});
   }
 
-  doOnlaunch() async {
+  appStarts() async {
     await getInfo();
     getsetTexts();
   }
 
   @override
   void initState() {
-    doOnlaunch();
+    appStarts();
     super.initState();
   }
 
@@ -129,45 +133,71 @@ class _ChatFinalState extends State<ChatFinal> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ChatRoom()));
               }),
           title: Text(widget.barMail),
           backgroundColor: Colors.teal[700]),
-      body: Container(
-        child: Stack(
-          children: [
-            showTexts(),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                color: Colors.teal[700],
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          controller: textController,
-                          decoration: InputDecoration(
-                            hintText: "type your text",
+      body: WillPopScope(
+        onWillPop: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        },
+        child: Container(
+          child: Stack(
+            children: [
+              showTexts(),
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: Colors.teal[700],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.photo),
+                            onPressed: () {
+                              ImageSelect.instance
+                                  .cropImage()
+                                  .then((cropPhoto) {
+                                if (cropPhoto != null) {
+                                  setState(() {
+                                    textType = "image";
+                                  });
+                                  imagetoFirebase(cropPhoto);
+                                }
+                              });
+                            }),
+                        Expanded(
+                          child: TextField(
+                            style: TextStyle(color: Colors.white),
+                            controller: textController,
+                            decoration: InputDecoration(
+                              hintText: "type your text",
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: () {
-                            addText(true);
-                          })
-                    ],
+                        IconButton(
+                            icon: Icon(Icons.send),
+                            onPressed: () {
+                              addText(true);
+                            })
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> imagetoFirebase(cropPhoto) async {
+    String takeImage = '';
   }
 }

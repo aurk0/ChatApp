@@ -1,16 +1,14 @@
-import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/datastore.dart';
-import 'package:chat_app/registration/signUP.dart';
+import 'package:chat_app/registration/signIN.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class SignIn extends StatefulWidget {
+class SignUP extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _SignUPState createState() => _SignUPState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUPState extends State<SignUP> {
   TextEditingController _emailcontroller1 = new TextEditingController();
   TextEditingController _passcontroller1 = new TextEditingController();
 
@@ -29,7 +27,9 @@ class _SignInState extends State<SignIn> {
       ),
       body: WillPopScope(
         onWillPop: () {
-          SystemNavigator.pop();
+          Navigator.pop(context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SignIn()));
         },
         child: Form(
           key: _key,
@@ -65,27 +65,27 @@ class _SignInState extends State<SignIn> {
                     child: TextButton(
                         onPressed: () async {
                           if (_key.currentState.validate()) {
-                            login();
+                            regAccount();
                           }
                         },
                         child: Text(
-                          "Sign In",
+                          "Sign Up",
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account?"),
+                    Text('Have an account?'),
                     TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUP()));
+                                  builder: (context) => SignIn()));
                         },
-                        child: Text("Sign Up"))
+                        child: Text("Sign In"))
                   ],
                 )
               ],
@@ -96,18 +96,21 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void login() async {
+  void regAccount() async {
     try {
-      final User user = (await auth.signInWithEmailAndPassword(
-        email: _emailcontroller1.text,
-        password: _passcontroller1.text,
-      ))
+      final User user = (await auth.createUserWithEmailAndPassword(
+              email: _emailcontroller1.text, password: _passcontroller1.text))
           .user;
+
+      Map<String, String> userDataMap = {"userEmail": _emailcontroller1.text};
+      datastore.addUserInfo(userDataMap);
+      print('Sign Up Successful');
+      Navigator.pop(context);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChatRoom()));
-      print('Login Successful');
+          context, MaterialPageRoute(builder: (context) => SignIn()));
     } catch (e) {
-      print(e);
+      print(e.toString());
+      return null;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:chat_app/registration/signIN.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -44,68 +45,74 @@ class _ChatRoomState extends State<ChatRoom> {
           ],
           backgroundColor: Colors.teal[700],
         ),
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("users").snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView(
-                children: snapshot.data.docs.map((Document) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            var chatroomID = getchatroomID(
-                                user.email, Document["userEmail"]);
-                            Map<String, dynamic> chatRoomInfo = {
-                              "users": [user.email, Document["userEmail"]]
-                            };
-                            Datastore()
-                                .createChatRoom(chatroomID, chatRoomInfo);
-
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChatFinal(Document["userEmail"])));
-                          },
-                          child: Container(
-                              height: 45,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Colors.blue,
-                                    Colors.amberAccent
-                                  ]),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    Document["userEmail"],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  Icon(
-                                    Icons.message,
-                                    color: Colors.blueGrey[800],
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ),
-                    ],
+        body: WillPopScope(
+          onWillPop: () {
+            SystemNavigator.pop();
+          },
+          child: StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection("users").snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                }).toList(),
-              );
-            }));
+                }
+                return ListView(
+                  children: snapshot.data.docs.map((Document) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              var chatroomID = getchatroomID(
+                                  user.email, Document["userEmail"]);
+                              Map<String, dynamic> chatRoomInfo = {
+                                "users": [user.email, Document["userEmail"]]
+                              };
+                              Datastore()
+                                  .createChatRoom(chatroomID, chatRoomInfo);
+
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChatFinal(Document["userEmail"])));
+                            },
+                            child: Container(
+                                height: 45,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Colors.blue,
+                                      Colors.amberAccent
+                                    ]),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      Document["userEmail"],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                    Icon(
+                                      Icons.message,
+                                      color: Colors.blueGrey[800],
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                );
+              }),
+        ));
   }
 
   Future logout() async {
