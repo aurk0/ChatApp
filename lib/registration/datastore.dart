@@ -45,7 +45,7 @@ class Datastore {
         .collection("chatRooms")
         .doc(chatroomID)
         .collection("chats")
-        .orderBy("time")
+        .orderBy("time", descending: true)
         .snapshots();
   }
 
