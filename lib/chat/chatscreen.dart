@@ -83,7 +83,7 @@ class _ChatFinalState extends State<ChatFinal> {
         Container(
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
           decoration: BoxDecoration(
-              color: Colors.teal[700],
+              color: sendByMe ? Colors.teal[700] : Colors.grey[700],
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -126,9 +126,8 @@ class _ChatFinalState extends State<ChatFinal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ChatRoom()));

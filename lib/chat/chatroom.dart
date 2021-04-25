@@ -1,5 +1,6 @@
 import 'package:chat_app/chat/chatscreen.dart';
 import 'package:chat_app/registration/datastore.dart';
+import 'package:chat_app/registration/signIN.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _ChatRoomState extends State<ChatRoom> {
           actions: [
             InkWell(
               onTap: () {
-                logout().whenComplete(() => Navigator.pop(context));
+                logout();
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
@@ -58,46 +59,47 @@ class _ChatRoomState extends State<ChatRoom> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            height: 45,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.amberAccent]),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  Document["userEmail"],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.message,
-                                      color: Colors.blueGrey[800],
-                                    ),
-                                    onPressed: () {
-                                      var chatroomID = getchatroomID(
-                                          user.email, Document["userEmail"]);
-                                      Map<String, dynamic> chatRoomInfo = {
-                                        "users": [
-                                          user.email,
-                                          Document["userEmail"]
-                                        ]
-                                      };
-                                      Datastore().createChatRoom(
-                                          chatroomID, chatRoomInfo);
+                        child: GestureDetector(
+                          onTap: () {
+                            var chatroomID = getchatroomID(
+                                user.email, Document["userEmail"]);
+                            Map<String, dynamic> chatRoomInfo = {
+                              "users": [user.email, Document["userEmail"]]
+                            };
+                            Datastore()
+                                .createChatRoom(chatroomID, chatRoomInfo);
 
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                              builder: (context) => ChatFinal(
-                                                  Document["userEmail"])));
-                                    })
-                              ],
-                            )),
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatFinal(Document["userEmail"])));
+                          },
+                          child: Container(
+                              height: 45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    Colors.blue,
+                                    Colors.amberAccent
+                                  ]),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    Document["userEmail"],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  Icon(
+                                    Icons.message,
+                                    color: Colors.blueGrey[800],
+                                  ),
+                                ],
+                              )),
+                        ),
                       ),
                     ],
                   );
@@ -108,5 +110,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
   Future logout() async {
     await auth.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
