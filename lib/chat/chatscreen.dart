@@ -75,30 +75,70 @@ class _ChatFinalState extends State<ChatFinal> {
     super.initState();
   }
 
+  Widget textTile(String texts, bool sendByMe) {
+    return Row(
+      mainAxisAlignment:
+          sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+          decoration: BoxDecoration(
+              color: Colors.teal[700],
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                  bottomLeft:
+                      sendByMe ? Radius.circular(25) : Radius.circular(0),
+                  bottomRight:
+                      sendByMe ? Radius.circular(0) : Radius.circular(25))),
+          padding: EdgeInsets.all(10),
+          child: Text(
+            texts,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget showTexts() {
+    return StreamBuilder(
+        stream: textStream,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  padding: EdgeInsets.only(bottom: 70, top: 15),
+                  reverse: true,
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    return textTile(ds["texts"], user.email == ds["sender"]);
+                  })
+              : Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.teal[700],
+                  ),
+                );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.barMail), backgroundColor: Colors.teal[700]),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ChatRoom()));
+              }),
+          title: Text(widget.barMail),
+          backgroundColor: Colors.teal[700]),
       body: Container(
         child: Stack(
           children: [
-            StreamBuilder(
-                stream: textStream,
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? ListView.builder(
-                          itemCount: snapshot.data.docs.length,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot ds = snapshot.data.docs[index];
-                            return Text(ds["texts"]);
-                          })
-                      : Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.teal[700],
-                          ),
-                        );
-                }),
+            showTexts(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -109,6 +149,7 @@ class _ChatFinalState extends State<ChatFinal> {
                     children: [
                       Expanded(
                         child: TextField(
+                          style: TextStyle(color: Colors.white),
                           controller: textController,
                           decoration: InputDecoration(
                             hintText: "type your text",

@@ -44,8 +44,8 @@ class Datastore {
     return FirebaseFirestore.instance
         .collection("chatRooms")
         .doc(chatroomID)
-        .collection("chats")
-        .orderBy("time", descending: true)
+        .collection("texts")
+        .orderBy("timeStand", descending: true)
         .snapshots();
   }
 
