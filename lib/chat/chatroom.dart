@@ -32,7 +32,10 @@ class _ChatRoomState extends State<ChatRoom> {
         key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("Chat App"),
+          title: Text(
+            "Logged in: " + user.email,
+            style: TextStyle(fontSize: 17),
+          ),
           actions: [
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),

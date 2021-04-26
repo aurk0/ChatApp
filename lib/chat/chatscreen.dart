@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/datastore.dart';
-import 'package:chat_app/sendImage/imageSend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
@@ -22,6 +22,28 @@ class _ChatFinalState extends State<ChatFinal> {
   String chatroomID, textID;
   Stream textStream;
   String textType = "";
+
+  //for emoji methods
+  bool emojiPicker = false;
+  bool isSelected = false;
+  keyboardVisible() {}
+
+  keyboardHide() {
+    final textFocus = FocusScope.of(context);
+    if (!textFocus.hasPrimaryFocus) textFocus.unfocus();
+  }
+
+  hideEmoji() {
+    setState(() {
+      emojiPicker = false;
+    });
+  }
+
+  viewEmoji() {
+    setState(() {
+      emojiPicker = true;
+    });
+  }
 
   getInfo() async {
     chatroomID = getchatroomID(widget.barMail, user.email);
@@ -126,6 +148,43 @@ class _ChatFinalState extends State<ChatFinal> {
         });
   }
 
+  Widget typeChat() {
+    return Container(
+      color: Colors.teal[700],
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Row(
+          children: [
+            IconButton(icon: Icon(Icons.photo), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.emoji_emotions),
+                onPressed: () {
+                  setState(() {
+                    viewEmoji();
+                    keyboardHide();
+                    print("workinggggggggggggggggggggggggggggg");
+                  });
+                }),
+            Expanded(
+              child: TextField(
+                style: TextStyle(color: Colors.white),
+                controller: textController,
+                decoration: InputDecoration(
+                  hintText: "type your text",
+                ),
+              ),
+            ),
+            IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {
+                  addText(true);
+                })
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,111 +204,31 @@ class _ChatFinalState extends State<ChatFinal> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ChatRoom()));
         },
-        child: Container(
-          child: Stack(
-            children: [
-              showTexts(),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: Colors.teal[700],
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Row(
-                      children: [
-                        IconButton(
-                            icon: Icon(Icons.attach_file),
-                            onPressed: () {
-                              // ImageSelect.instance
-                              //     .cropImage()
-                              //     .then((cropPhoto) {
-                              //   if (cropPhoto != null) {
-                              //     setState(() {
-                              //       textType = "image";
-                              //     });
-                              //     imagetoFirebase(cropPhoto);
-                              //   }
-                              // });
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext c) {
-                                    return Container(
-                                        padding: EdgeInsets.all(16),
-                                        height: 90,
-                                        child: Column(
-                                          children: [
-                                            GestureDetector(
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.photo,
-                                                        color: Colors.teal[700],
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "Send Photo",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.emoji_emotions,
-                                                        color: Colors.teal[700],
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "Send Emoji",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ));
-                                  });
-                            }),
-                        Expanded(
-                          child: TextField(
-                            style: TextStyle(color: Colors.white),
-                            controller: textController,
-                            decoration: InputDecoration(
-                              hintText: "type your text",
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                            icon: Icon(Icons.send),
-                            onPressed: () {
-                              addText(true);
-                            })
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+        child: Stack(
+          children: [
+            showTexts(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(child: typeChat()),
+                emojiPicker
+                    ? EmojiPicker(
+                        bgColor: Colors.teal[700],
+                        indicatorColor: Colors.teal[900],
+                        rows: 3,
+                        columns: 7,
+                        onEmojiSelected: (emoji, category) {
+                          setState(() {
+                            isSelected = true;
+                          });
+                          textController.text =
+                              textController.text + emoji.emoji;
+                        },
+                      )
+                    : Container()
+              ],
+            )
+          ],
         ),
       ),
     );
