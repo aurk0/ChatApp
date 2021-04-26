@@ -26,7 +26,10 @@ class _ChatFinalState extends State<ChatFinal> {
   //for emoji methods
   bool emojiPicker = false;
   bool isSelected = false;
-  keyboardVisible() {}
+  keyboardVisible() {
+    final textFocus = FocusScope.of(context);
+    if (!textFocus.hasPrimaryFocus) textFocus.requestFocus();
+  }
 
   keyboardHide() {
     final textFocus = FocusScope.of(context);
@@ -159,11 +162,13 @@ class _ChatFinalState extends State<ChatFinal> {
             IconButton(
                 icon: Icon(Icons.emoji_emotions),
                 onPressed: () {
-                  setState(() {
+                  if (!emojiPicker) {
                     viewEmoji();
                     keyboardHide();
-                    print("workinggggggggggggggggggggggggggggg");
-                  });
+                  } else {
+                    hideEmoji();
+                    keyboardVisible();
+                  }
                 }),
             Expanded(
               child: TextField(
