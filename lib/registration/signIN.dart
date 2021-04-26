@@ -85,7 +85,10 @@ class _SignInState extends State<SignIn> {
                               MaterialPageRoute(
                                   builder: (context) => SignUP()));
                         },
-                        child: Text("Sign Up"))
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.teal[700]),
+                        ))
                   ],
                 )
               ],

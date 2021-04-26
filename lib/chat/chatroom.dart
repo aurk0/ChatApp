@@ -33,15 +33,13 @@ class _ChatRoomState extends State<ChatRoom> {
           automaticallyImplyLeading: false,
           title: Text("Chat App"),
           actions: [
-            InkWell(
-              onTap: () {
-                logout();
-              },
-              child: Container(
+            Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Icon(Icons.exit_to_app_rounded),
-              ),
-            )
+                child: IconButton(
+                    icon: Icon(Icons.exit_to_app),
+                    onPressed: () {
+                      logout();
+                    }))
           ],
           backgroundColor: Colors.teal[700],
         ),
@@ -56,7 +54,9 @@ class _ChatRoomState extends State<ChatRoom> {
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.teal[700],
+                    ),
                   );
                 }
                 return ListView(
@@ -64,7 +64,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     return Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(10),
                           child: GestureDetector(
                             onTap: () {
                               var chatroomID = getchatroomID(
@@ -117,6 +117,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   Future logout() async {
     await auth.signOut();
+    Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
