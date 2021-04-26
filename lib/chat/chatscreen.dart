@@ -158,7 +158,7 @@ class _ChatFinalState extends State<ChatFinal> {
         padding: const EdgeInsets.all(6.0),
         child: Row(
           children: [
-            IconButton(icon: Icon(Icons.photo), onPressed: () {}),
+            //IconButton(icon: Icon(Icons.photo), onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.emoji_emotions),
                 onPressed: () {
