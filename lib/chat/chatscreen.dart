@@ -110,6 +110,7 @@ class _ChatFinalState extends State<ChatFinal> {
           sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
+          width: 250,
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
           decoration: BoxDecoration(
               color: sendByMe ? Colors.teal[700] : Colors.grey[700],
@@ -160,7 +161,10 @@ class _ChatFinalState extends State<ChatFinal> {
           children: [
             //IconButton(icon: Icon(Icons.photo), onPressed: () {}),
             IconButton(
-                icon: Icon(Icons.emoji_emotions),
+                icon: Icon(
+                  Icons.emoji_emotions,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   if (!emojiPicker) {
                     viewEmoji();
@@ -175,12 +179,16 @@ class _ChatFinalState extends State<ChatFinal> {
                 style: TextStyle(color: Colors.white),
                 controller: textController,
                 decoration: InputDecoration(
-                  hintText: "type your text",
-                ),
+                    border: InputBorder.none,
+                    hintText: "type your text",
+                    hintStyle: TextStyle(color: Colors.white)),
               ),
             ),
             IconButton(
-                icon: Icon(Icons.send),
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   addText(true);
                 })

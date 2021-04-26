@@ -36,9 +36,14 @@ class _SignUPState extends State<SignUP> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(
+                  "Sign Up",
+                  style: TextStyle(fontSize: 20, color: Colors.teal[700]),
+                ),
                 SizedBox(
-                  height: 150,
+                  height: 70,
                 ),
                 TextField(
                   controller: _emailcontroller1,

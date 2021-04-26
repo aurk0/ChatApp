@@ -68,7 +68,8 @@ class _ChatRoomState extends State<ChatRoom> {
                     return Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 10),
                           child: GestureDetector(
                             onTap: () {
                               var chatroomID = getchatroomID(
@@ -89,10 +90,10 @@ class _ChatRoomState extends State<ChatRoom> {
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(colors: [
-                                      Colors.blue,
-                                      Colors.amberAccent
+                                      Colors.grey[350],
+                                      Colors.teal[300]
                                     ]),
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
