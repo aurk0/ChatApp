@@ -4,6 +4,7 @@ import 'package:chat_app/registration/signUP.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -106,6 +107,8 @@ class _SignInState extends State<SignIn> {
         password: _passcontroller1.text,
       ))
           .user;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _emailcontroller1.text);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => ChatRoom()));
       print('Login Successful');

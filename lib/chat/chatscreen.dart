@@ -154,22 +154,80 @@ class _ChatFinalState extends State<ChatFinal> {
                 child: Container(
                   color: Colors.teal[700],
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Row(
                       children: [
                         IconButton(
-                            icon: Icon(Icons.photo),
+                            icon: Icon(Icons.attach_file),
                             onPressed: () {
-                              ImageSelect.instance
-                                  .cropImage()
-                                  .then((cropPhoto) {
-                                if (cropPhoto != null) {
-                                  setState(() {
-                                    textType = "image";
+                              // ImageSelect.instance
+                              //     .cropImage()
+                              //     .then((cropPhoto) {
+                              //   if (cropPhoto != null) {
+                              //     setState(() {
+                              //       textType = "image";
+                              //     });
+                              //     imagetoFirebase(cropPhoto);
+                              //   }
+                              // });
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext c) {
+                                    return Container(
+                                        padding: EdgeInsets.all(16),
+                                        height: 90,
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.photo,
+                                                        color: Colors.teal[700],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        "Send Photo",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.emoji_emotions,
+                                                        color: Colors.teal[700],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        "Send Emoji",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ));
                                   });
-                                  imagetoFirebase(cropPhoto);
-                                }
-                              });
                             }),
                         Expanded(
                           child: TextField(
@@ -197,7 +255,7 @@ class _ChatFinalState extends State<ChatFinal> {
     );
   }
 
-  Future<void> imagetoFirebase(cropPhoto) async {
-    String takeImage = '';
-  }
+  // Future<void> imagetoFirebase(cropPhoto) async {
+  //   String takeImage = '';
+  // }
 }

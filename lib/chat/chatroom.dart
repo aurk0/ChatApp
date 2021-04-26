@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: IconButton(
                     icon: Icon(Icons.exit_to_app),
-                    onPressed: () {
+                    onPressed: () async {
                       logout();
                     }))
           ],
@@ -116,6 +117,8 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Future logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('email');
     await auth.signOut();
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
