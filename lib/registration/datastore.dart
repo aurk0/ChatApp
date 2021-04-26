@@ -2,13 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Datastore {
-  getUser(String email) async {
-    return await FirebaseFirestore.instance
-        .collection("users")
-        .where("userEmail", isEqualTo: email)
-        .get();
-  }
-
   Future addTextsFirebase(
       String chatroomID, String textID, Map textInfo) async {
     return FirebaseFirestore.instance
