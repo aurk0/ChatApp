@@ -31,6 +31,12 @@ class _SignUPState extends State<SignUP> {
         child: Stack(
           children: [
             Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.green[600], Colors.white]),
+                ),
                 height: double.infinity,
                 width: double.infinity,
                 child: Column(
@@ -41,7 +47,7 @@ class _SignUPState extends State<SignUP> {
                     Text(
                       "Chat App",
                       style: TextStyle(
-                          color: Colors.deepOrange[900],
+                          color: Colors.white,
                           fontSize: 40,
                           fontWeight: FontWeight.bold),
                     ),
@@ -51,7 +57,7 @@ class _SignUPState extends State<SignUP> {
                     Text(
                       "Registration",
                       style: TextStyle(
-                          color: Colors.deepOrange[400],
+                          color: Colors.green[900],
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
@@ -61,7 +67,10 @@ class _SignUPState extends State<SignUP> {
                 top: 200,
                 child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.deepOrange[300],
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.white, Colors.green[600]]),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(35),
                             topRight: Radius.circular(35))),
@@ -79,14 +88,14 @@ class _SignUPState extends State<SignUP> {
                           controller: _emailcontroller1,
                           decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.deepOrange[300],
+                              fillColor: Colors.green[300],
                               border: InputBorder.none,
                               hintText: "Enter E-mail",
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4)),
                                 borderSide: BorderSide(
-                                    width: 1, color: Colors.deepOrange[300]),
+                                    width: 1, color: Colors.green[700]),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
@@ -103,14 +112,14 @@ class _SignUPState extends State<SignUP> {
                           controller: _passcontroller1,
                           decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.deepOrange[300],
+                              fillColor: Colors.green[300],
                               border: InputBorder.none,
                               hintText: "Enter Password",
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4)),
                                 borderSide: BorderSide(
-                                    width: 1, color: Colors.deepOrange[300]),
+                                    width: 1, color: Colors.green[700]),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
@@ -126,7 +135,7 @@ class _SignUPState extends State<SignUP> {
                             width: 150,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.orange[900]),
+                                color: Colors.green[600]),
                             child: TextButton(
                                 onPressed: () async {
                                   if (_key.currentState.validate()) {
@@ -157,8 +166,7 @@ class _SignUPState extends State<SignUP> {
                                 },
                                 child: Text(
                                   "Sign In",
-                                  style:
-                                      TextStyle(color: Colors.deepOrange[900]),
+                                  style: TextStyle(color: Colors.white),
                                 ))
                           ],
                         )

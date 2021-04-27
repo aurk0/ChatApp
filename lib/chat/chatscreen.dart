@@ -110,10 +110,10 @@ class _ChatFinalState extends State<ChatFinal> {
           sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
-          width: 250,
+          width: 200,
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
           decoration: BoxDecoration(
-              color: sendByMe ? Colors.teal[700] : Colors.grey[700],
+              color: sendByMe ? Colors.green[300] : Colors.grey[400],
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -124,7 +124,7 @@ class _ChatFinalState extends State<ChatFinal> {
           padding: EdgeInsets.all(10),
           child: Text(
             texts,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
         ),
       ],
@@ -146,7 +146,7 @@ class _ChatFinalState extends State<ChatFinal> {
                   })
               : Center(
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.teal[700],
+                    backgroundColor: Colors.green[900],
                   ),
                 );
         });
@@ -154,7 +154,9 @@ class _ChatFinalState extends State<ChatFinal> {
 
   Widget typeChat() {
     return Container(
-      color: Colors.teal[700],
+      margin: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          color: Colors.green[800], borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: Row(
@@ -175,13 +177,19 @@ class _ChatFinalState extends State<ChatFinal> {
                   }
                 }),
             Expanded(
-              child: TextField(
-                style: TextStyle(color: Colors.white),
-                controller: textController,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "type your text",
-                    hintStyle: TextStyle(color: Colors.white)),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.green[200],
+                    borderRadius: BorderRadius.circular(25)),
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  controller: textController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "type your text",
+                      hintStyle: TextStyle(color: Colors.black)),
+                ),
               ),
             ),
             IconButton(
@@ -201,50 +209,104 @@ class _ChatFinalState extends State<ChatFinal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatRoom()));
-              }),
-          title: Text(widget.barMail),
-          backgroundColor: Colors.teal[700]),
-      body: WillPopScope(
-        onWillPop: () {
-          Navigator.pop(context);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChatRoom()));
-        },
-        child: Stack(
-          children: [
-            showTexts(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Flexible(child: typeChat()),
-                emojiPicker
-                    ? EmojiPicker(
-                        bgColor: Colors.teal[700],
-                        indicatorColor: Colors.teal[900],
-                        rows: 3,
-                        columns: 7,
-                        onEmojiSelected: (emoji, category) {
-                          setState(() {
-                            isSelected = true;
-                          });
-                          textController.text =
-                              textController.text + emoji.emoji;
-                        },
+        // appBar: AppBar(
+        //     leading: IconButton(
+        //         icon: Icon(Icons.arrow_back_ios),
+        //         onPressed: () {
+        //           Navigator.pop(context);
+        //           Navigator.push(context,
+        //               MaterialPageRoute(builder: (context) => ChatRoom()));
+        //         }),
+        //     title: Text(widget.barMail),
+        //     backgroundColor: Colors.teal[700]),
+        body: WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+      },
+      child: Stack(
+        children: [
+          Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.green[600], Colors.white]),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.arrow_back_ios_rounded),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatRoom()));
+                          }),
+                      Text(widget.barMail,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: 20,
                       )
-                    : Container()
-              ],
-            )
-          ],
-        ),
+                    ],
+                  ),
+                ],
+              )),
+          Positioned(
+              top: 120,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15))),
+                width: MediaQuery.of(context).size.width,
+                height: 640,
+                child: Container(
+                  child: Stack(
+                    children: [
+                      showTexts(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(child: typeChat()),
+                          emojiPicker
+                              ? EmojiPicker(
+                                  bgColor: Colors.teal[700],
+                                  indicatorColor: Colors.teal[900],
+                                  rows: 3,
+                                  columns: 7,
+                                  onEmojiSelected: (emoji, category) {
+                                    setState(() {
+                                      isSelected = true;
+                                    });
+                                    textController.text =
+                                        textController.text + emoji.emoji;
+                                  },
+                                )
+                              : Container()
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ))
+        ],
       ),
-    );
+    ));
   }
 
   // Future<void> imagetoFirebase(cropPhoto) async {

@@ -37,6 +37,12 @@ class _ChatRoomState extends State<ChatRoom> {
         child: Stack(
           children: [
             Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.green[600], Colors.white]),
+                ),
                 height: double.infinity,
                 width: double.infinity,
                 child: Row(
@@ -45,31 +51,24 @@ class _ChatRoomState extends State<ChatRoom> {
                     Column(
                       children: [
                         SizedBox(
-                          height: 45,
+                          height: 40,
                         ),
                         Text(
                           user.email,
                           style: TextStyle(
-                              color: Colors.deepOrange[900],
+                              color: Colors.white,
                               fontSize: 25,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Logged In",
-                          style: TextStyle(
-                              color: Colors.deepOrange[400],
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        IconButton(
+                            icon: Icon(
+                              Icons.logout,
+                              color: Colors.green[900],
+                            ),
+                            onPressed: () {
+                              logout();
+                            })
                       ],
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.logout),
-                      onPressed: () {},
-                      color: Colors.deepOrange[900],
                     )
                   ],
                 )),
@@ -77,7 +76,10 @@ class _ChatRoomState extends State<ChatRoom> {
                 top: 120,
                 child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.deepOrange[200],
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.white, Colors.green[600]]),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15))),
@@ -92,7 +94,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           if (!snapshot.hasData) {
                             return Center(
                               child: CircularProgressIndicator(
-                                backgroundColor: Colors.deepOrange[900],
+                                backgroundColor: Colors.green[900],
                               ),
                             );
                           }
@@ -126,8 +128,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
-                                                Colors.deepOrange[50],
-                                                Colors.deepOrange[600]
+                                                Colors.green[50],
+                                                Colors.green[600]
                                               ]),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
@@ -138,12 +140,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                               Text(
                                                 Document["userEmail"],
                                                 style: TextStyle(
+                                                    letterSpacing: 2,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16),
                                               ),
                                               Icon(
                                                 Icons.message,
-                                                color: Colors.deepOrange[900],
+                                                color: Colors.green[900],
                                               ),
                                             ],
                                           )),
