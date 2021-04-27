@@ -265,45 +265,46 @@ class _ChatFinalState extends State<ChatFinal> {
                   ),
                 ],
               )),
-          Positioned(
-              top: 120,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15))),
+              width: double.infinity,
+              height: 640,
               child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15))),
-                width: MediaQuery.of(context).size.width,
-                height: 640,
-                child: Container(
-                  child: Stack(
-                    children: [
-                      showTexts(),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Flexible(child: typeChat()),
-                          emojiPicker
-                              ? EmojiPicker(
-                                  bgColor: Colors.teal[700],
-                                  indicatorColor: Colors.teal[900],
-                                  rows: 3,
-                                  columns: 7,
-                                  onEmojiSelected: (emoji, category) {
-                                    setState(() {
-                                      isSelected = true;
-                                    });
-                                    textController.text =
-                                        textController.text + emoji.emoji;
-                                  },
-                                )
-                              : Container()
-                        ],
-                      )
-                    ],
-                  ),
+                child: Stack(
+                  children: [
+                    showTexts(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Flexible(child: typeChat()),
+                        emojiPicker
+                            ? EmojiPicker(
+                                bgColor: Colors.green[400],
+                                indicatorColor: Colors.green[900],
+                                rows: 3,
+                                columns: 7,
+                                onEmojiSelected: (emoji, category) {
+                                  setState(() {
+                                    isSelected = true;
+                                  });
+                                  textController.text =
+                                      textController.text + emoji.emoji;
+                                },
+                              )
+                            : Container()
+                      ],
+                    )
+                  ],
                 ),
-              ))
+              ),
+            ),
+          )
         ],
       ),
     ));
