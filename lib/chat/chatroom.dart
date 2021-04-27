@@ -45,31 +45,34 @@ class _ChatRoomState extends State<ChatRoom> {
                 ),
                 height: double.infinity,
                 width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
                   children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Text(
-                          user.email,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                            icon: Icon(
-                              Icons.logout,
-                              color: Colors.green[900],
-                            ),
-                            onPressed: () {
-                              logout();
-                            })
-                      ],
-                    )
+                    SizedBox(
+                      height: 45,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            user.email,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                logout();
+                              })
+                        ],
+                      ),
+                    ),
                   ],
                 )),
             Positioned(
@@ -79,7 +82,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Colors.white, Colors.green[600]]),
+                            colors: [Colors.white, Colors.green[300]]),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15))),
@@ -100,6 +103,9 @@ class _ChatRoomState extends State<ChatRoom> {
                           }
                           return ListView(
                             children: snapshot.data.docs.map((Document) {
+                              var str = Document["userEmail"];
+                              var parts = str.split('@');
+                              var prefix = parts[0].trim();
                               return Column(
                                 children: [
                                   Padding(
@@ -124,31 +130,51 @@ class _ChatRoomState extends State<ChatRoom> {
                                                     Document["userEmail"])));
                                       },
                                       child: Container(
-                                          height: 50,
+                                          height: 70,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                               gradient: LinearGradient(colors: [
-                                                Colors.green[50],
-                                                Colors.green[600]
+                                                Colors.grey[300],
+                                                Colors.green[400]
                                               ]),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(
-                                                Document["userEmail"],
-                                                style: TextStyle(
-                                                    letterSpacing: 2,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                              ),
-                                              Icon(
-                                                Icons.message,
-                                                color: Colors.green[900],
-                                              ),
-                                            ],
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 30),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 25.0,
+                                                      backgroundImage: NetworkImage(
+                                                          "https://i.ytimg.com/vi/R2YErtEOE6s/maxresdefault.jpg"),
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      prefix,
+                                                      style: TextStyle(
+                                                          letterSpacing: 2,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Icon(
+                                                  Icons.message,
+                                                  color: Colors.green[900],
+                                                ),
+                                              ],
+                                            ),
                                           )),
                                     ),
                                   ),

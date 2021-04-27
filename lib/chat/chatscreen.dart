@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chat_app/chat/chatroom.dart';
 import 'package:chat_app/registration/datastore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -156,12 +154,11 @@ class _ChatFinalState extends State<ChatFinal> {
     return Container(
       margin: EdgeInsets.all(12),
       decoration: BoxDecoration(
-          color: Colors.green[800], borderRadius: BorderRadius.circular(10)),
+          color: Colors.green, borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: Row(
           children: [
-            //IconButton(icon: Icon(Icons.photo), onPressed: () {}),
             IconButton(
                 icon: Icon(
                   Icons.emoji_emotions,
@@ -232,10 +229,10 @@ class _ChatFinalState extends State<ChatFinal> {
                     height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
-                          icon: Icon(Icons.arrow_back_ios_rounded),
+                          icon: Icon(Icons.arrow_back_ios_rounded,
+                              color: Colors.white),
                           onPressed: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -243,14 +240,14 @@ class _ChatFinalState extends State<ChatFinal> {
                                 MaterialPageRoute(
                                     builder: (context) => ChatRoom()));
                           }),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Text(widget.barMail,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25,
                               fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        width: 20,
-                      )
                     ],
                   ),
                 ],
@@ -299,8 +296,4 @@ class _ChatFinalState extends State<ChatFinal> {
       ),
     ));
   }
-
-  // Future<void> imagetoFirebase(cropPhoto) async {
-  //   String takeImage = '';
-  // }
 }
