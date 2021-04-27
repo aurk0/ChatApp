@@ -29,95 +29,135 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            "Logged in: " + user.email,
-            style: TextStyle(fontSize: 17),
-          ),
-          actions: [
+      key: _scaffoldKey,
+      body: WillPopScope(
+        onWillPop: () {
+          SystemNavigator.pop();
+        },
+        child: Stack(
+          children: [
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    onPressed: () async {
-                      logout();
-                    }))
-          ],
-          backgroundColor: Colors.teal[700],
-        ),
-        body: WillPopScope(
-          onWillPop: () {
-            SystemNavigator.pop();
-          },
-          child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection("users").snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.teal[700],
-                    ),
-                  );
-                }
-                return ListView(
-                  children: snapshot.data.docs.map((Document) {
-                    return Column(
+                height: double.infinity,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10),
-                          child: GestureDetector(
-                            onTap: () {
-                              var chatroomID = getchatroomID(
-                                  user.email, Document["userEmail"]);
-                              Map<String, dynamic> chatRoomInfo = {
-                                "users": [user.email, Document["userEmail"]]
-                              };
-                              Datastore()
-                                  .createChatRoom(chatroomID, chatRoomInfo);
-
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChatFinal(Document["userEmail"])));
-                            },
-                            child: Container(
-                                height: 45,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                      Colors.grey[350],
-                                      Colors.teal[300]
-                                    ]),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      Document["userEmail"],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Icon(
-                                      Icons.message,
-                                      color: Colors.blueGrey[800],
-                                    ),
-                                  ],
-                                )),
-                          ),
+                        SizedBox(
+                          height: 45,
+                        ),
+                        Text(
+                          user.email,
+                          style: TextStyle(
+                              color: Colors.deepOrange[900],
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Logged In",
+                          style: TextStyle(
+                              color: Colors.deepOrange[400],
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
-                    );
-                  }).toList(),
-                );
-              }),
-        ));
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.logout),
+                      onPressed: () {},
+                      color: Colors.deepOrange[900],
+                    )
+                  ],
+                )),
+            Positioned(
+                top: 120,
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.deepOrange[200],
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15))),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("users")
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.deepOrange[900],
+                              ),
+                            );
+                          }
+                          return ListView(
+                            children: snapshot.data.docs.map((Document) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10, top: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        var chatroomID = getchatroomID(
+                                            user.email, Document["userEmail"]);
+                                        Map<String, dynamic> chatRoomInfo = {
+                                          "users": [
+                                            user.email,
+                                            Document["userEmail"]
+                                          ]
+                                        };
+                                        Datastore().createChatRoom(
+                                            chatroomID, chatRoomInfo);
+
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) => ChatFinal(
+                                                    Document["userEmail"])));
+                                      },
+                                      child: Container(
+                                          height: 50,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                Colors.deepOrange[50],
+                                                Colors.deepOrange[600]
+                                              ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                Document["userEmail"],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              ),
+                                              Icon(
+                                                Icons.message,
+                                                color: Colors.deepOrange[900],
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        })))
+          ],
+        ),
+      ),
+    );
   }
 
   Future logout() async {
