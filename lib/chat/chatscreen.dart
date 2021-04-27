@@ -209,16 +209,6 @@ class _ChatFinalState extends State<ChatFinal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //     leading: IconButton(
-        //         icon: Icon(Icons.arrow_back_ios),
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //           Navigator.push(context,
-        //               MaterialPageRoute(builder: (context) => ChatRoom()));
-        //         }),
-        //     title: Text(widget.barMail),
-        //     backgroundColor: Colors.teal[700]),
         body: WillPopScope(
       onWillPop: () {
         Navigator.pop(context);
